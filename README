@@ -1,0 +1,357 @@
+Configuration steps:
+Devlopment server:
+
+# In my case htdocs is my root folder. and i linked htdocs/(project_files) folder to /var/www/project_name/(project_files).
+
+# Your project htdocs must be inside 4 sub-folder after. like example1/example2/example3/example4/htdocs.
+
+# above guide i use all folder name should be example1, example2, example3, example4 exactly like this. you can replace your folder name. but architutre must be this guide. other wise project will not work.
+
+
+# copy inside example1/example2/config-templete/(all_files and folder) all files and paste it one step back. eg: paste it in example1/example2/ folder.
+
+# if already exists no need to move and if you want you can delete config-templete folder also.
+
+# this is only one time setup.
+
+# 1.location of config-template is. from htdocs two step back (/../../htdocs/)
+
+# if you going to store your_project in root folder. you can create folder in root just example1,2,3,4/htdocs like that. but this is (not recommanded).
+# if going to store your_project in some other place eg: /home/WebApp/ (most recommanded)
+# then some place you need to put full path of your path location. like /home/WebApp/example1/example2/example3/example4/htdocs. i also comment it in exact line where you need to put full path.
+
+# docker all perserve data must be exactly example1 folder place. (NOTE: not inside example1 folder.)
+# eg: /home/WebApp/example1/
+# eg: /home/WebApp/DockerPerserveData/
+
+
+File: Dockerfile:
+_________________________________
+
+RUN rm /var/www/html/index.html
+COPY ./example4/htdocs/ /var/www/html/   
+COPY ./entry.sh /var/www/
+CMD /var/www/entry.sh
+_________________________________
+
+
+File: entry.sh:
+_________________________________
+
+#! /bin/bash
+
+# git pull to get code from git using ssh.
+# more thing you can do here like move files, copying, and many etc.
+# sed -i "s/short_open_tag = .*/short_open_tag = On/" /etc/php/8.1/apache2/php.ini
+
+/usr/sbin/apache2ctl -D FOREGROUND
+_________________________________
+
+
+File: __migrations.sql:
+_________________________________
+
+database backup conntent is here.
+_________________________________
+
+
+File: .docker-compose-server.yml:
+_________________________________
+
+  mysql.lms-erp.com:
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '/home/data/lms-erp/mysql:/var/lib/mysql'  # perserve location will be decide after hosting this project
+
+  adminer.lms-erp.com:
+      image: adminer 
+    
+  lms-erp.com:
+      build: './lms-erp.com/.'
+      volumes:
+        - './lms-erp.com/lms-erp.com/htdocs/:/var/www/html/'   
+        - '/home/data/lms-erp/apache2/apache2/php.ini:/etc/php/8.1/apache2/php.ini'
+        - '/home/data/lms-erp/apache2/cli/php.ini:/etc/php/8.1/cli/php.ini'
+        - '/home/data/lms-erp/config/config.json:/var/www/config.json'
+_________________________________
+
+
+File: .env:
+.yml file password are here.
+_________________________________
+
+RPSWD=rootpswd
+USER=root
+UPSWD=pswd
+DB=lms-erp
+___________________________________________
+
+
+File: config.json:
+database configuration and other configrution are here.
+_________________________________
+
+{
+    "db_server": "your_server_name",
+    "db_username": "your_user_name",
+    "db_password": "your_password",
+    "db_name": "your_db_name",
+
+    # this deponds on your project root folder is inside folder or not
+    # example if your doing your project in /var/www/html/your_project/index.php : base path is your_project.
+    # example if your doing your project in /var/www/html/index.php : base path is /.
+    # because root is html which is your project name that may be different like your_project_name.
+    "base_path": "/" 
+}
+___________________________________________
+
+
+File: docker-compose.yml:
+_________________________________
+
+  mysql.lms-erp.com:
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/Mysql/lms-erpMysqlData:/var/lib/mysql'
+
+  adminer.lms-erp.com:
+      image: adminer
+    
+  lms-erp.com:
+      build: './lms-erp.com/.'
+      volumes:
+        - './lms-erp.com/lms-erp.com/htdocs/:/var/www/html/'   
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/PreserveData/lms-erpPerserveData/apache2/php.ini:/etc/php/8.1/apache2/php.ini'
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/PreserveData/lms-erpPerserveData/cli/php.ini:/etc/php/8.1/cli/php.ini'
+        - '/media/iamsaadh/HelloSaadh/CopiedData/innovatement/lms-erp/lms-erp/lms-erp.com/config.json:/var/www/config.json'
+_________________________________        
+
+
+
+#######################################################################################################################################################
+
+Production | Beta | Tesing | server:
+# copy /dir/config-templete/ folder all files and paste it one step back. eg: paste it dir folder.
+# in this project two config-templetes are there:
+# 1. from htdocs one step back /../htdocs/
+# 2. from htdocs two step back /../../htdocs/
+
+
+File: Dockerfile:
+_________________________________
+
+RUN rm /var/www/html/index.html
+COPY ./lms-erp.com/htdocs/ /var/www/html/   
+COPY ./entry.sh /var/www/
+CMD /var/www/entry.sh
+_________________________________
+
+
+File: entry.sh:
+_________________________________
+
+#! /bin/bash
+
+# git pull to get code from git using ssh.
+
+# more thing you can do here like move files, copying, and many.
+
+# sed -i "s/short_open_tag = .*/short_open_tag = On/" /etc/php/8.1/apache2/php.ini
+
+/usr/sbin/apache2ctl -D FOREGROUND
+_________________________________
+
+
+File: __migrations.sql:
+_________________________________
+
+database backup conntent is here.
+_________________________________
+
+
+File: .docker-compose-server.yml:
+_________________________________
+
+  mysql.lms-erp.com:
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '/home/data/lms-erp/mysql:/var/lib/mysql'  # perserve location will be decide after hosting this project
+
+  adminer.lms-erp.com:
+      image: adminer 
+    
+  lms-erp.com:
+      build: './lms-erp.com/.'
+      volumes:
+        - './lms-erp.com/lms-erp.com/htdocs/:/var/www/html/'   
+        - '/home/data/lms-erp/apache2/apache2/php.ini:/etc/php/8.1/apache2/php.ini'
+        - '/home/data/lms-erp/apache2/cli/php.ini:/etc/php/8.1/cli/php.ini'
+        - '/home/data/lms-erp/config/config.json:/var/www/config.json'
+_________________________________
+
+
+File: .env:
+.yml file password are here.
+_________________________________
+
+RPSWD=rootpswd
+USER=root
+UPSWD=pswd
+DB=lms-erp
+___________________________________________
+
+
+File: config.json:
+database configuration and other configrution are here.
+_________________________________
+
+{
+    "db_server": "your_server_name",
+    "db_username": "your_user_name",
+    "db_password": "your_password",
+    "db_name": "your_db_name",
+
+    # this deponds on your project root folder is inside folder or not
+    # example if your doing your project in /var/www/html/your_project/index.php : base path is your_project.
+    # example if your doing your project in /var/www/html/index.php : base path is /.
+    # because root is html which is your project name that may be different like your_project_name.
+    "base_path": "/" 
+}
+___________________________________________
+
+
+File: docker-compose.yml:
+_________________________________
+
+  mysql.lms-erp.com:
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/Mysql/lms-erpMysqlData:/var/lib/mysql'
+
+  adminer.lms-erp.com:
+      image: adminer
+    
+  lms-erp.com:
+      build: './lms-erp.com/.'
+      volumes:
+        - './lms-erp.com/lms-erp.com/htdocs/:/var/www/html/'   
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/PreserveData/lms-erpPerserveData/apache2/php.ini:/etc/php/8.1/apache2/php.ini'
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/PreserveData/lms-erpPerserveData/cli/php.ini:/etc/php/8.1/cli/php.ini'
+        - '/media/iamsaadh/HelloSaadh/CopiedData/innovatement/lms-erp/lms-erp/lms-erp.com/config.json:/var/www/config.json'
+_________________________________        
+
+
+To prevent directory travesal:
+_________________________________   
+
+# put above code in config file.
+<Directory "/var/www/html/">
+    Options -Indexes
+</Directory>
+
+<VirtualHost *:80>
+	# The ServerName directive sets the request scheme, hostname and port that
+	# the server uses to identify itself. This is used when creating
+	# redirection URLs. In the context of virtual hosts, the ServerName
+	# specifies what hostname must appear in the request's Host: header to
+	# match this virtual host. For the default virtual host (this file) this
+	# value is not decisive as it is used as a last resort host regardless.
+	# However, you must set it for any further virtual host explicitly.
+	
+	ServerName www.example.com
+	ServerAlias www.example1.com
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/sec_web_content_folder_name (ex: /var/www/lms-erp)
+	
+	<Directory "/var/www/html/">
+        Options -Indexes
+	</Directory>
+
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	# For most configuration files from conf-available/, which are
+	# enabled or disabled at a global level, it is possible to
+	# include a line for only one particular virtual host. For example the
+	# following line enables the CGI configuration for this host only
+	# after it has been globally disabled with "a2disconf".
+	#Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+_________________________________        
+
+
+Site Permission:
+Without this permission site not open:
+error: forbiden
+_________________________________   
+
+# put above code in config file.
+<Directory "/var/www/html/">
+    AllowOverride none
+    Require all granted
+</Directory>
+
+<VirtualHost *:80>
+	# The ServerName directive sets the request scheme, hostname and port that
+	# the server uses to identify itself. This is used when creating
+	# redirection URLs. In the context of virtual hosts, the ServerName
+	# specifies what hostname must appear in the request's Host: header to
+	# match this virtual host. For the default virtual host (this file) this
+	# value is not decisive as it is used as a last resort host regardless.
+	# However, you must set it for any further virtual host explicitly.
+	
+	ServerName www.example.com
+	ServerAlias www.example1.com
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/sec_web_content_folder_name (ex: /var/www/lms-erp)
+	
+	<Directory "/var/www/html/">
+      AllowOverride none
+      Require all granted
+	</Directory>
+
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	# For most configuration files from conf-available/, which are
+	# enabled or disabled at a global level, it is possible to
+	# include a line for only one particular virtual host. For example the
+	# following line enables the CGI configuration for this host only
+	# after it has been globally disabled with "a2disconf".
+	#Include conf-available/serve-cgi-bin.conf
+</VirtualHost>

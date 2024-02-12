@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  mysql.lms-erp.com:
+      container_name: "mysql.lms-erp.com"
+      hostname: 'mysql.lms-erp.com'
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '~/WebApps/Data/DataBase/lms-erp.com/Mysql/:/var/lib/mysql'
+
+  adminer.lms-erp.com:
+      container_name: "adminer.lms-erp.com"
+      hostname: 'adminer.lms-erp.com'
+      image: adminer
+      restart: always
+      ports:
+        - 8001:8080   
+    
+  lms-erp.com:
+      container_name: "lms-erp.com"
+      hostname: 'lms-erp.com'
+      build: '.'
+      restart: always
+      ports:
+        - '8000:80'
+        
+      volumes:
+        - '../lms-erp.com/htdocs/:/var/www/html/'   
+        - '../lms-erp.com/config/config.json:/var/www/config/lms-erp.com_config/config.json'

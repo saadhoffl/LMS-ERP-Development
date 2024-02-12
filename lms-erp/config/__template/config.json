@@ -1,0 +1,8 @@
+{
+    "db_server": "mysql.lms-erp.com",
+    "db_username": "saadh",
+    "db_password": "Saadh",
+    "db_name": "lms-erp",
+    "base_path": "/",
+    "stored_data_path": "/home/saadhoffl/WebApps/DockerData/DataBase/lms-erp.com/usrData"
+}
