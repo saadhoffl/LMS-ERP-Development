@@ -1,0 +1,55 @@
+version: '3.9'
+services:
+  mysql.knowledegeuniverse.com:
+      container_name: "mysql.knowledegeuniverse.com"
+      hostname: 'mysql.knowledegeuniverse.com'
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '~/WebApps/Data/DataBase/knowledegeuniverse.com/Mysql/:/var/lib/mysql'
+
+  adminer.knowledegeuniverse.com:
+      container_name: "adminer.knowledegeuniverse.com"
+      hostname: 'adminer.knowledegeuniverse.com'
+      image: adminer
+      restart: always
+      ports:
+        - 8001:8080   
+
+  mysql.user.knowledegeuniverse.com:
+      container_name: "mysql.user.knowledegeuniverse.com"
+      hostname: 'mysql.user.knowledegeuniverse.com'
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${UD_RPSWD}
+        MYSQL_USER: ${UD_USER}
+        MYSQL_PASSWORD: ${UD_UPSWD}
+        MYSQL_DATABASE: ${UD_DB}
+      volumes:  
+        - '~/WebApps/Data/DataBase/usersdata.knowledegeuniverse.com/Mysql/:/var/lib/mysql'
+
+  adminer.user.knowledegeuniverse.com:
+      container_name: "adminer.user.knowledegeuniverse.com"
+      hostname: 'adminer.user.knowledegeuniverse.com'
+      image: adminer
+      restart: always
+      ports:
+        - 8004:8080
+    
+  knowledegeuniverse.com:
+      container_name: "knowledegeuniverse.com"
+      hostname: 'knowledegeuniverse.com'
+      build: '.'
+      restart: always
+      ports:
+        - '8000:80'
+        
+      volumes:
+        - '../knowledegeuniverse.com/htdocs/:/var/www/html/'   
+        - '../knowledegeuniverse.com/config/config.json:/var/www/config/knowledegeuniverse.com_config/config.json'

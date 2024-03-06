@@ -1,0 +1,25 @@
+{
+  "name": "knowledegeuniverse",
+  "version": "1.0.0",
+  "description": "grunt-project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hellosaadh",
+  "license": "ISC",
+  "dependencies": {
+    "bower": "^1.8.14",
+    "grunt": "^1.6.1",
+    "jquery": "^3.7.1",
+    "sass": "^1.66.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^5.0.0",
+    "grunt-contrib-obfuscator": "^8.0.0",
+    "grunt-contrib-sass": "^2.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "javascript-obfuscator": "^4.0.2"
+  }
+}

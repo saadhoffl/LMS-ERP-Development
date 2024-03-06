@@ -1,0 +1,13 @@
+{
+    "db_server": "mysql.knowledegeuniverse.com",
+    "db_username": "saadh",
+    "db_password": "Saadh",
+    "db_name": "knowledegeuniverse",
+    "base_path": "/",
+    "stored_data_path": "/home/saadhoffl/WebApps/DockerData/DataBase/knowledegeuniverse.com/usrData",
+    "email_verify_code": "",
+    "user_db_server": "mysql.user.knowledegeuniverse.com",
+    "user_db_username": "saadh",
+    "user_db_password": "saadh",
+    "user_db_name": "knowledegeuniverse"
+}

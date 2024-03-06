@@ -1,0 +1,9 @@
+{
+    "db_server": "mysql.studyroom.knowledegeuniverse.com",
+    "db_username": "root",
+    "db_password": "rootpswd",
+    "db_name": "studyroom",
+    "base_path": "/",
+    "stored_data_path": "/home/saadhoffl/WebApps/DockerData/DataBase/studyroom.knowledegeuniverse.com/usrData",
+    "email_verify_code": ""
+}

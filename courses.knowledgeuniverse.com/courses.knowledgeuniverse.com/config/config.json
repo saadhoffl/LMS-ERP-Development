@@ -1,0 +1,9 @@
+{
+    "db_server": "mysql.courses.knowledegeuniverse.com",
+    "db_username": "root",
+    "db_password": "rootpswd",
+    "db_name": "courses",
+    "base_path": "/",
+    "stored_data_path": "/home/saadhoffl/WebApps/DockerData/DataBase/courses.knowledegeuniverse.com/usrData",
+    "email_verify_code": ""
+}

@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  git.knowledegeuniverse.com:
+      container_name: "git.knowledegeuniverse.com"
+      image: 'gitlab/gitlab-ce:latest'
+      hostname: 'git.knowledegeuniverse.com'
+      restart: always
+      ports:
+        - '8005:80'
+      volumes:
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/PreserveData/knowledegeuniverseGitlabData/config:/etc/gitlab'
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/PreserveData/knowledegeuniverseGitlabData/log:/var/log/gitlab'
+        - '/media/iamsaadh/HelloSaadh/CopiedData/DockerDatabaseData/PreserveData/knowledegeuniverseGitlabData/data:/var/opt/gitlab'
+      shm_size: '256m'

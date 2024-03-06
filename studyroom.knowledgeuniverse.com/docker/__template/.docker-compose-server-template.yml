@@ -1,0 +1,37 @@
+# This docker yml configration is for only server
+
+version: '3.9'
+services:
+  mysql.knowledegeuniverse.com:
+      container_name: "mysql.knowledegeuniverse.com"
+      hostname: 'mysql.knowledegeuniverse.com'
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '/home/data/knowledegeuniverse/mysql:/var/lib/mysql'  # perserve location will be decide after hosting this project
+
+  adminer.knowledegeuniverse.com:
+      container_name: "adminer.knowledegeuniverse.com"
+      hostname: 'adminer.knowledegeuniverse.com'
+      image: adminer
+      restart: always
+      ports:
+        - 8001:8080   
+    
+  knowledegeuniverse.com:
+      container_name: "knowledegeuniverse.com"
+      hostname: 'knowledegeuniverse.com'
+      build: './knowledegeuniverse.com/.'
+      restart: always
+      ports:
+        - '8000:80'
+      volumes:
+        - './knowledegeuniverse.com/knowledegeuniverse.com/htdocs/:/var/www/html/'   
+        - '/home/data/knowledegeuniverse/apache2/apache2/php.ini:/etc/php/8.1/apache2/php.ini'
+        - '/home/data/knowledegeuniverse/apache2/cli/php.ini:/etc/php/8.1/cli/php.ini'
+        - '/home/data/knowledegeuniverse/config/config.json:/var/www/config.json'

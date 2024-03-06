@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  mysql.courses.knowledegeuniverse.com:
+      container_name: "mysql.courses.knowledegeuniverse.com"
+      hostname: 'mysql.courses.knowledegeuniverse.com'
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '~/WebApps/Data/DataBase/courses.knowledegeuniverse.com/Mysql/:/var/lib/mysql'
+
+  adminer.courses.knowledegeuniverse.com:
+      container_name: "adminer.courses.knowledegeuniverse.com"
+      hostname: 'adminer.courses.knowledegeuniverse.com'
+      image: adminer
+      restart: always
+      ports:
+        - 8201:8080   
+    
+  courses.knowledegeuniverse.com:
+      container_name: "courses.knowledegeuniverse.com"
+      hostname: 'courses.knowledegeuniverse.com'
+      build: '.'
+      restart: always
+      ports:
+        - '8200:80'
+        
+      volumes:
+        - '../courses.knowledegeuniverse.com/htdocs/:/var/www/html/'   
+        - '../courses.knowledegeuniverse.com/config/config.json:/var/www/config/courses.knowledegeuniverse.com_config/config.json'

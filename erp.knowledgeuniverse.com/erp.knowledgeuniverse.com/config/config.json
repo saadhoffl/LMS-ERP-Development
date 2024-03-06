@@ -1,0 +1,9 @@
+{
+    "db_server": "mysql.erp.knowledegeuniverse.com",
+    "db_username": "root",
+    "db_password": "rootpswd",
+    "db_name": "erp_knowledegeuniverse",
+    "base_path": "/",
+    "stored_data_path": "/home/saadhoffl/WebApps/DockerData/DataBase/erp.knowledegeuniverse.com/usrData",
+    "email_verify_code": ""
+}

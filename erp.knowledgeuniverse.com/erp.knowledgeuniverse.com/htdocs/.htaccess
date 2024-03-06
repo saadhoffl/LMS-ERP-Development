@@ -1,0 +1,45 @@
+Header add Access-Control-Allow-Origin: *
+Header add Access-Control-Allow-Methods: *
+Header add Access-Control-Request-Headers: *
+
+ErrorDocument 404 /page_exist.php
+
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^/?files/([^/]+)?$ files.php?name=$1 [L,QSA,NC]
+
+# For api url structure redefine and redirect.
+RewriteRule ^/?app-api/([^/]+)?$ app-api.php?rquest=$1 [L,QSA,NC]
+RewriteRule ^/?common-api/([^/]+)?$ common-api.php?rquest=$1 [L,QSA,NC]
+RewriteRule ^/?web-api/([^/]+)?$ web-api.php?rquest=$1 [L,QSA,NC]
+
+RewriteRule ^src/api/app-api/ /a/ [L,R=301]
+RewriteRule ^/?a/([^/]+)/(.+)?$ app-api.php?rquest=$2&namespace=$1 [L,QSA,NC]
+
+RewriteRule ^src/api/common-api/ /c/ [L,R=301]
+RewriteRule ^/?c/([^/]+)/(.+)?$ common-api.php?rquest=$2&namespace=$1 [L,QSA,NC]
+
+RewriteRule ^src/api/web-api/ /w/ [L,R=301]
+RewriteRule ^/?w/([^/]+)/(.+)?$ web-api.php?rquest=$2&namespace=$1 [L,QSA,NC]
+
+
+## For general files, if not above, just remove .php
+# Redirect external .php requests to 404 Error (Pretending that I am not doing PHP)
+RewriteCond %{THE_REQUEST} ^(.+)\.php([#?][^\ ]*)?\ HTTP/
+RewriteRule ^(.+)\.php$ "http://%{HTTP_HOST}/$1" [R=404,L]
+
+# Resolve .php file for extensionless php urls
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^/.]+)$ $1.php [L]
+
+#For only test folder.
+# Redirect requests with .php extension inside the "test" folder to extensionless URLs
+RewriteCond %{THE_REQUEST} ^/__test/(.+)\.php([#?][^\ ]*)?\ HTTP/
+RewriteRule ^__test/(.+)\.php$ http://%{HTTP_HOST}/__test/$1 [R=301,L]
+
+# Resolve extensionless PHP URLs inside the "test" folder to actual PHP files
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/__test/$1.php -f
+RewriteRule ^__test/([^/.]+)$ __test/$1.php [L]
+

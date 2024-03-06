@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  mysql.studyroom.knowledegeuniverse.com:
+      container_name: "mysql.studyroom.knowledegeuniverse.com"
+      hostname: 'mysql.studyroom.knowledegeuniverse.com'
+      image: mysql # You can pull your own customized docker mysql image from your gitlab.
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${RPSWD}
+        MYSQL_USER: ${USER}
+        MYSQL_PASSWORD: ${UPSWD}
+        MYSQL_DATABASE: ${DB}
+      volumes:  
+        - '~/WebApps/Data/DataBase/studyroom.knowledegeuniverse.com/Mysql/:/var/lib/mysql'
+
+  adminer.studyroom.knowledegeuniverse.com:
+      container_name: "adminer.studyroom.knowledegeuniverse.com"
+      hostname: 'adminer.studyroom.knowledegeuniverse.com'
+      image: adminer
+      restart: always
+      ports:
+        - 8101:8080   
+    
+  studyroom.knowledegeuniverse.com:
+      container_name: "studyroom.knowledegeuniverse.com"
+      hostname: 'studyroom.knowledegeuniverse.com'
+      build: '.'
+      restart: always
+      ports:
+        - '8100:80'
+        
+      volumes:
+        - '../studyroom.knowledegeuniverse.com/htdocs/:/var/www/html/'   
+        - '../studyroom.knowledegeuniverse.com/config/config.json:/var/www/config/studyroom.knowledegeuniverse.com_config/config.json'
